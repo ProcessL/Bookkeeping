@@ -1,0 +1,38 @@
+info:
+  contact: {}
+  description: 使用gin+vue进行极速开发的全栈开发基础平台
+  title: GoGoFly Swagger API接口文档
+  version: v1.0.1
+paths:
+  /api/v1/public/user/login:
+    get:
+      consumes:
+      - application/json
+      description: 用户登录详细描述
+      parameters:
+      - description: username
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: password
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 用户登录
+      tags:
+      - 用户模块
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: x-token
+    type: apiKey
+swagger: "2.0"

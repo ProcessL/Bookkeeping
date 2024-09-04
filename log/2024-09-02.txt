@@ -1,0 +1,6 @@
+{"level":"INFO","time":"2024-09-02 22:36:04","caller":"core/redis.go:29","msg":"redis connect ping result:{result 15 0 PONG <nil>}"}
+{"level":"INFO","time":"2024-09-02 22:36:04","caller":"router/router.go:72","msg":"start http server on :8090"}
+{"level":"INFO","time":"2024-09-02 22:37:38","caller":"core/redis.go:29","msg":"redis connect ping result:{result 15 0 PONG <nil>}"}
+{"level":"INFO","time":"2024-09-02 22:37:38","caller":"router/router.go:72","msg":"start http server on :8090"}
+{"level":"INFO","time":"2024-09-02 23:59:39","caller":"core/redis.go:29","msg":"redis connect ping result:{result 15 0 PONG <nil>}"}
+{"level":"INFO","time":"2024-09-02 23:59:39","caller":"router/router.go:69","msg":"start http server on :8090"}

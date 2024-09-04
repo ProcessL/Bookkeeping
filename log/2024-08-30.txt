@@ -1,0 +1,17 @@
+{"level":"INFO","time":"2024-08-30 00:25:13","caller":"core/redis.go:22","msg":"redis connect ping result:{result 15 0 PONG <nil>}"}
+{"level":"INFO","time":"2024-08-30 00:25:13","caller":"router/router.go:64","msg":"start http server on :8090"}
+{"level":"ERROR","time":"2024-08-30 00:25:59","caller":"core/redis.go:19","msg":"redis connect ping fail:{error 26 0  dial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.}"}
+{"level":"INFO","time":"2024-08-30 00:31:02","caller":"core/redis.go:22","msg":"redis connect ping result:{result 15 0 PONG <nil>}"}
+{"level":"INFO","time":"2024-08-30 00:31:02","caller":"router/router.go:64","msg":"start http server on :8090"}
+{"level":"INFO","time":"2024-08-30 01:22:42","caller":"core/redis.go:29","msg":"redis connect ping result:{result 15 0 PONG <nil>}"}
+{"level":"INFO","time":"2024-08-30 01:22:42","caller":"cmd/cmd.go:20","msg":"get:get key:: value"}
+{"level":"INFO","time":"2024-08-30 01:22:42","caller":"router/router.go:64","msg":"start http server on :8090"}
+{"level":"INFO","time":"2024-08-30 01:23:59","caller":"core/redis.go:29","msg":"redis connect ping result:{result 15 0 PONG <nil>}"}
+{"level":"INFO","time":"2024-08-30 01:23:59","caller":"cmd/cmd.go:20","msg":"get:get rose: red"}
+{"level":"INFO","time":"2024-08-30 01:23:59","caller":"router/router.go:64","msg":"start http server on :8090"}
+{"level":"INFO","time":"2024-08-30 01:24:18","caller":"core/redis.go:29","msg":"redis connect ping result:{result 15 0 PONG <nil>}"}
+{"level":"INFO","time":"2024-08-30 01:24:18","caller":"cmd/cmd.go:20","msg":"get rose: red"}
+{"level":"INFO","time":"2024-08-30 01:24:18","caller":"router/router.go:64","msg":"start http server on :8090"}
+{"level":"INFO","time":"2024-08-30 01:24:58","caller":"core/redis.go:29","msg":"redis connect ping result:{result 15 0 PONG <nil>}"}
+{"level":"INFO","time":"2024-08-30 01:24:58","caller":"cmd/cmd.go:21","msg":"get rose: red"}
+{"level":"INFO","time":"2024-08-30 01:24:58","caller":"router/router.go:64","msg":"start http server on :8090"}

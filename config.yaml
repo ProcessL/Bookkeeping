@@ -1,0 +1,28 @@
+system:
+  port: 8090
+  use-redis: true  #是否使用redis
+
+zap:
+  max-size: 1
+  max-backups: 10
+  max-age: 2
+  develop: true
+
+mysql:
+  username: "root"
+  password:  "root"
+  db-name: "go_fly"
+  address: "127.0.0.1"
+  port: "3306"
+  config: "charset=utf8mb4&parseTime=True&loc=Local"
+  max-idle-conns: 10
+  max-open-conns: 100
+
+redis:
+  addr: "localhost:6379"
+  password: ""
+  db: 0
+
+jwt:
+  token-expire: 1
+  signing-key: wasBRb9csbfgdv4eFuQwrK9eg7XVuUMqrYRhJYZGr1K4SZZ3SPOjEZDTO4jirE7a

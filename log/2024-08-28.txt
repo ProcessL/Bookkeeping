@@ -1,0 +1,27 @@
+{"level":"DEBUG","time":"2024-08-28 17:27:27","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 17:27:27","msg":"start http server on :8099"}
+{"level":"DEBUG","time":"2024-08-28 17:28:13","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 17:28:13","msg":"start http server on :8099"}
+{"level":"DEBUG","time":"2024-08-28 17:37:18","caller":"cmd/cmd.go:13","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 17:37:18","caller":"router/router.go:65","msg":"start http server on :8099"}
+{"level":"DEBUG","time":"2024-08-28 17:38:26","caller":"cmd/cmd.go:13","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 17:38:26","caller":"router/router.go:65","msg":"start http server on :8099"}
+{"level":"DEBUG","time":"2024-08-28 20:41:38","caller":"cmd/cmd.go:13","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 20:41:38","caller":"router/router.go:65","msg":"start http server on :8099"}
+{"level":"DEBUG","time":"2024-08-28 20:42:19","caller":"cmd/cmd.go:13","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 20:42:19","caller":"router/router.go:65","msg":"start http server on :8099"}
+{"level":"DEBUG","time":"2024-08-28 20:42:45","caller":"cmd/cmd.go:13","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 20:42:45","caller":"router/router.go:65","msg":"start http server on :8099"}
+{"level":"DEBUG","time":"2024-08-28 20:44:25","caller":"cmd/cmd.go:13","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 20:44:25","caller":"router/router.go:64","msg":"start http server on :8090"}
+{"level":"DEBUG","time":"2024-08-28 20:45:46","caller":"cmd/cmd.go:13","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 20:45:46","caller":"router/router.go:64","msg":"start http server on :8090"}
+{"level":"DEBUG","time":"2024-08-28 21:13:32","caller":"cmd/cmd.go:13","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 21:13:32","caller":"core/gorm.go:11","msg":"mysql connect success:{root   127.0.0.1 3306 charset=utf8mb4&parseTime=True&loc=Local 10 100}"}
+{"level":"DEBUG","time":"2024-08-28 21:19:11","caller":"cmd/cmd.go:13","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 21:19:11","caller":"core/gorm.go:11","msg":"mysql connect success:{root   127.0.0.1 3306 charset=utf8mb4&parseTime=True&loc=Local 10 100}"}
+{"level":"DEBUG","time":"2024-08-28 21:19:50","caller":"cmd/cmd.go:13","msg":"配置日志成功"}
+{"level":"INFO","time":"2024-08-28 21:19:50","caller":"core/gorm.go:11","msg":"mysql connect success:{root root  127.0.0.1 3306 charset=utf8mb4&parseTime=True&loc=Local 10 100}"}
+{"level":"INFO","time":"2024-08-28 21:19:50","caller":"router/router.go:64","msg":"start http server on :8090"}
+{"level":"INFO","time":"2024-08-28 21:24:09","caller":"router/router.go:64","msg":"start http server on :8090"}
+{"level":"INFO","time":"2024-08-28 21:24:18","caller":"router/router.go:64","msg":"start http server on :8090"}
