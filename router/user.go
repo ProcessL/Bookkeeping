@@ -8,7 +8,7 @@ import (
 
 func InitUserRouter() {
 	RegisterRouter(func(rgPublic *gin.RouterGroup, rgAuth *gin.RouterGroup) {
-		userApi := api.NewUserApi()
+		userApi := api.UserInfoApi{}
 		rgPublicUser := rgPublic.Group("/user")
 		{
 			rgPublicUser.POST("/login", userApi.Login)

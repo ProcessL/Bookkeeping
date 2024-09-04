@@ -7,11 +7,18 @@ import (
 )
 
 type (
-	Option func(opt *option)
+	Option func(*option)
 	option struct {
 		code int
 	}
 )
+
+// CustomerWithCode 自定义状态码
+func CustomerWithCode(code int) Option {
+	return func(opt *option) {
+		opt.code = code
+	}
+}
 
 type Response struct {
 	Code int    `json:"code"`
@@ -65,15 +72,24 @@ func Fail(c *gin.Context) {
 	})
 }
 
-func FailWithMessage(c *gin.Context, msg string, code ...int) {
-	Result(c, buildStatus(http.StatusBadRequest, code...), Response{
+func FailWithMessage(c *gin.Context, msg string, opts ...Option) {
+	var opt option
+	for _, o := range opts {
+		o(&opt)
+	}
+	fmt.Println("code:", opt.code)
+	Result(c, buildStatus(http.StatusBadRequest, opt.code), Response{
 		Code: ERROR,
 		Msg:  msg,
 	})
 }
 
-func FailWithDetailed(c *gin.Context, msg string, data interface{}, code ...int) {
-	Result(c, buildStatus(http.StatusBadRequest, code...), Response{
+func FailWithDetailed(c *gin.Context, msg string, data interface{}, opts ...Option) {
+	var opt option
+	for _, o := range opts {
+		o(&opt)
+	}
+	Result(c, buildStatus(http.StatusBadRequest, opt.code), Response{
 		Code: ERROR,
 		Msg:  msg,
 		Data: data,
@@ -81,11 +97,11 @@ func FailWithDetailed(c *gin.Context, msg string, data interface{}, code ...int)
 }
 
 // buildStatus 自定义错误状态码
-func buildStatus(defaultStatus int, code ...int) int {
-	if len(code) == 0 {
+func buildStatus(defaultStatus int, code int) int {
+	if code == 0 {
 		return defaultStatus
 	}
-	return code[0]
+	return code
 }
 
 func AppendError(existErr, newErr error) error {
