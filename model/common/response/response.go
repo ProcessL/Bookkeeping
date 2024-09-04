@@ -6,6 +6,13 @@ import (
 	"net/http"
 )
 
+type (
+	Option func(opt *option)
+	option struct {
+		code int
+	}
+)
+
 type Response struct {
 	Code int    `json:"code"`
 	Msg  string `json:"msg,omitempty"`
