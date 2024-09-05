@@ -6,6 +6,7 @@ import (
 	"fmt"
 	_ "github.com/dotdancer/gogofly/docs"
 	"github.com/dotdancer/gogofly/global"
+	"github.com/dotdancer/gogofly/middleware"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -38,6 +39,7 @@ func InitRouter() {
 
 	//初始化gin框架，并且注册相关路由
 	r := gin.Default()
+	r.Use(middleware.Cors())
 	rgPublic := r.Group("/api/v1/public")
 	rgAuth := r.Group("/api/v1/auth")
 
