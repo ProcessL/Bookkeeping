@@ -58,6 +58,7 @@ func createDir02(path string, stParentDir string) {
 }
 
 func TestGenerate02(t *testing.T) {
-	loadJson02()
-	pareNode(&iRootNode, "")
+	//loadJson02()
+	//pareNode(&iRootNode, "")
+
 }

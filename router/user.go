@@ -12,6 +12,14 @@ func InitUserRouter() {
 		rgPublicUser := rgPublic.Group("/user")
 		{
 			rgPublicUser.POST("/login", userApi.Login)
+			rgPublicUser.GET("/dome", func(ctx *gin.Context) {
+				ctx.AbortWithStatusJSON(http.StatusOK, gin.H{
+					"data": []map[string]any{
+						{"id": 1, "name": "张三"},
+						{"id": 2, "name": "李四"},
+					},
+				})
+			})
 
 		}
 
