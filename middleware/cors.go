@@ -1,14 +1,12 @@
 package middleware
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println("11111")
 		method := c.Request.Method
 		origin := c.Request.Header.Get("Origin")
 		c.Header("Access-Control-Allow-Origin", origin)

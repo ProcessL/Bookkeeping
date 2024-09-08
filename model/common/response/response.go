@@ -77,7 +77,6 @@ func FailWithMessage(c *gin.Context, msg string, opts ...Option) {
 	for _, o := range opts {
 		o(&opt)
 	}
-	fmt.Println("code:", opt.code)
 	Result(c, buildStatus(http.StatusBadRequest, opt.code), Response{
 		Code: ERROR,
 		Msg:  msg,

@@ -15,9 +15,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/public/user/login": {
-            "get": {
-                "description": "用户登录详细描述",
+        "/api/v1/auth/user/addUser": {
+            "post": {
+                "description": "用户注册详细描述",
                 "consumes": [
                     "application/json"
                 ],
@@ -27,20 +27,47 @@ const docTemplate = `{
                 "tags": [
                     "用户模块"
                 ],
-                "summary": "用户登录",
+                "summary": "添加用户",
                 "parameters": [
                     {
-                        "type": "string",
                         "description": "username",
                         "name": "username",
-                        "in": "formData",
-                        "required": true
-                    },
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AddUserDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/user/getUserById/{id}": {
+            "get": {
+                "description": "获取用户详情描述",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "获取用户详情",
+                "parameters": [
                     {
-                        "type": "string",
-                        "description": "password",
-                        "name": "password",
-                        "in": "formData",
+                        "type": "integer",
+                        "description": "username",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -51,6 +78,31 @@ const docTemplate = `{
                             "type": "string"
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.AddUserDto": {
+            "type": "object",
+            "required": [
+                "email",
+                "password",
+                "phone",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         }

@@ -1,11 +1,13 @@
 package dto
 
-type UserInfo struct {
-	Username string `json:"username" binding:"required"`
-	Age      int    `json:"age" binding:"required"`
-	Password string `json:"password" binding:"required"`
+type AddUserDto struct {
+	Username string `json:"username" form:"username" binding:"required"`
+	Password string `json:"password" form:"password" binding:"required"`
+	Email    string `json:"email" form:"email" binding:"required"`
+	Phone    string `json:"phone" form:"phone" binding:"required"`
 }
 
-func (UserInfo) TableName() string {
-	return "user_info"
+type LoginUserDto struct {
+	Username string `json:"username" form:"username" binding:"required"`
+	Password string `json:"password" form:"password" binding:"required"`
 }
