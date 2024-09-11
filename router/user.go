@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"github.com/dotdancer/gogofly/api"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -11,11 +10,11 @@ func InitUserRouter() {
 	RegisterRouter(func(rgPublic *gin.RouterGroup, rgAuth *gin.RouterGroup) {
 		userApi := api.UserInfoApi{}
 		rgPublicUser := rgPublic.Group("/user")
-		rgPublicUser.Use(func(c *gin.Context) {
-			header := c.GetHeader("x-apikey")
-			fmt.Println("header:", header)
-			c.Next()
-		})
+		//rgPublicUser.Use(func(c *gin.Context) {
+		//	header := c.GetHeader("x-apikey")
+		//	fmt.Println("header:", header)
+		//	c.Next()
+		//})
 		{
 			rgPublicUser.POST("/login", userApi.Login)
 			rgPublicUser.GET("/dome", func(c *gin.Context) {
@@ -26,6 +25,9 @@ func InitUserRouter() {
 					},
 				})
 			})
+			rgPublicUser.GET("/createTenableData", userApi.CreateTenableData)
+			rgPublicUser.GET("/scanResult", userApi.ScanResult)
+			rgPublicUser.GET("/analysis/:id", userApi.Analysis)
 		}
 
 		rgAuthUser := rgAuth.Group("/user")

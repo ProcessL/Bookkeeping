@@ -10,7 +10,7 @@ import (
 func Start() {
 	core.InitConfig()
 	global.Logger = core.InitLogger()
-	//global.DB = core.InitMysql()
+	global.DB = core.InitMysql()
 	//if global.Config.System.UseRedis {
 	//	core.InitRedis()
 	//}
