@@ -2,10 +2,12 @@ package test
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 var stRootDir string
@@ -70,4 +72,59 @@ func createDir(path string) {
 func TestGenerateDir(t *testing.T) {
 	loadJson()
 	parseMap(iJsonData, "")
+}
+
+func TestWriteJsonFile(t *testing.T) {
+	var filePath string
+	fileDir := "../docs/markdown/"
+	dirList := strings.Split(fileDir, "/")
+	for _, dir := range dirList {
+		filePath = filepath.Join(filePath, dir)
+	}
+	fmt.Println(filePath)
+	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
+		panic(err)
+	}
+	filePath = filepath.Join(filePath, "dir.json")
+	now := time.Now()
+	offset := TimeOffset{
+		StartTime: now.AddDate(0, 0, -30).Unix(),
+		EndTime:   now.Unix(),
+	}
+	marshal, err := json.MarshalIndent(offset, "", "\t")
+	if err != nil {
+		panic(err)
+	}
+	if err := os.WriteFile(filePath, marshal, os.ModePerm); err != nil {
+		panic(err)
+	}
+}
+
+type TimeOffset struct {
+	StartTime int64 `json:"startTime"`
+	EndTime   int64 `json:"endTime"`
+}
+
+func TestReadJsonFile(t *testing.T) {
+	var fileJson string
+	filePath := "../docs/markdown/dir.json"
+	pathSplit := strings.Split(filePath, "/")
+	for _, file := range pathSplit {
+		fileJson = filepath.Join(fileJson, file)
+	}
+	fmt.Println(fileJson)
+	file, err := os.ReadFile(fileJson)
+	if err != nil {
+		panic(err)
+	}
+	var offset TimeOffset
+	if err := json.Unmarshal(file, &offset); err != nil {
+		panic(err)
+	}
+	fmt.Println(offset)
+	offset.StartTime = offset.EndTime
+	unix := time.Unix(offset.StartTime, 0)
+	fmt.Println(unix)
+	date := unix.AddDate(0, 0, 30).Unix()
+	fmt.Println(date)
 }
