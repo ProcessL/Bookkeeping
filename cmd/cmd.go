@@ -11,9 +11,9 @@ func Start() {
 	core.InitConfig()
 	global.Logger = core.InitLogger()
 	global.DB = core.InitMysql()
-	if global.Config.System.UseRedis {
-		core.InitRedis()
-	}
+	//if global.Config.System.UseRedis {
+	//	core.InitRedis()
+	//}
 	router.InitRouter()
 }
 
