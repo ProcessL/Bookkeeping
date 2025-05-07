@@ -2,6 +2,10 @@ package api
 
 import (
 	"fmt"
+	"net/http"
+	"strconv"
+	"time"
+
 	"github.com/dotdancer/gogofly/global"
 	"github.com/dotdancer/gogofly/model"
 	"github.com/dotdancer/gogofly/model/common/response"
@@ -10,9 +14,6 @@ import (
 	"github.com/dotdancer/gogofly/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"net/http"
-	"strconv"
-	"time"
 )
 
 type UserInfoApi struct{}
@@ -25,7 +26,7 @@ var userInfoService = new(service.UserInfoService)
 // @Description 用户注册详细描述
 // @Accept  application/json
 // @Produce  application/json
-// @Param   username     formDate    dto.LoginUserDto     true   "username"
+// @Param   username     formData    dto.LoginUserDto     true   "username"
 // @Success 200 {string} string	"ok"
 // @Router /api/v1/public/user/login [post]
 func (l *UserInfoApi) Login(c *gin.Context) {

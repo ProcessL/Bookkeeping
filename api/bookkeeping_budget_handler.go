@@ -188,7 +188,7 @@ func (api *BookkeepingBudgetApi) UpdateBudget(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "预算ID"
-// @Success 200 {object} model.common.response.Response
+// @Success 200 {object} response.Response
 // @Router /bk/budgets/{id} [delete]
 func (api *BookkeepingBudgetApi) DeleteBudget(c *gin.Context) {
 	// 解析预算ID
@@ -253,4 +253,4 @@ func (api *BookkeepingBudgetApi) CheckBudgetAlerts(c *gin.Context) {
 	}
 
 	utils.OkWithData(c, result)
-} 
+}

@@ -1,4 +1,52 @@
 definitions:
+  api.Page:
+    properties:
+      pageIndex:
+        type: integer
+      pageSize:
+        type: integer
+    type: object
+  dto.AccountResponse:
+    properties:
+      created_at:
+        type: string
+      current_balance:
+        type: number
+      id:
+        type: integer
+      initial_balance:
+        type: number
+      is_default:
+        type: boolean
+      name:
+        type: string
+      remark:
+        type: string
+      type:
+        $ref: '#/definitions/model.AccountType'
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  dto.AccountSummaryItem:
+    properties:
+      account_id:
+        description: 账户ID
+        type: integer
+      account_name:
+        description: 账户名称
+        type: string
+      account_type:
+        description: 账户类型
+        type: string
+      current_balance:
+        description: 当前余额
+        type: number
+      initial_balance:
+        description: 初始余额
+        type: number
+    type: object
   dto.AddUserDto:
     properties:
       email:
@@ -14,6 +62,594 @@ definitions:
     - password
     - phone
     - username
+    type: object
+  dto.BudgetListResponse:
+    properties:
+      items:
+        description: 预算列表
+        items:
+          $ref: '#/definitions/dto.BudgetResponse'
+        type: array
+      total:
+        description: 总数
+        type: integer
+    type: object
+  dto.BudgetProgressResponse:
+    properties:
+      amount:
+        description: 预算金额
+        type: number
+      category:
+        allOf:
+        - $ref: '#/definitions/dto.Category'
+        description: 关联的分类
+      category_id:
+        description: 分类ID
+        type: integer
+      created_at:
+        description: 创建时间
+        type: string
+      current_period:
+        description: 当前预算周期
+        properties:
+          end_date:
+            description: 当前周期结束日期
+            type: string
+          start_date:
+            description: 当前周期开始日期
+            type: string
+        type: object
+      days_remaining:
+        description: 周期内剩余天数
+        type: integer
+      description:
+        description: 备注
+        type: string
+      id:
+        description: 预算ID
+        type: integer
+      is_active:
+        description: 是否激活
+        type: boolean
+      is_over_budget:
+        description: 是否超出预算
+        type: boolean
+      name:
+        description: 预算名称
+        type: string
+      notify_rate:
+        description: 提醒阈值
+        type: number
+      period:
+        description: 预算周期
+        type: string
+      remaining_amount:
+        description: 剩余金额
+        type: number
+      spent_amount:
+        description: 已花费金额
+        type: number
+      start_date:
+        description: 开始日期
+        type: string
+      type:
+        description: 预算类型
+        type: string
+      updated_at:
+        description: 更新时间
+        type: string
+      usage_rate:
+        description: 使用率 (0-1.0)
+        type: number
+      user_id:
+        description: 用户ID
+        type: integer
+    type: object
+  dto.BudgetResponse:
+    properties:
+      amount:
+        description: 预算金额
+        type: number
+      category:
+        allOf:
+        - $ref: '#/definitions/dto.Category'
+        description: 关联的分类
+      category_id:
+        description: 分类ID
+        type: integer
+      created_at:
+        description: 创建时间
+        type: string
+      description:
+        description: 备注
+        type: string
+      id:
+        description: 预算ID
+        type: integer
+      is_active:
+        description: 是否激活
+        type: boolean
+      name:
+        description: 预算名称
+        type: string
+      notify_rate:
+        description: 提醒阈值
+        type: number
+      period:
+        description: 预算周期
+        type: string
+      start_date:
+        description: 开始日期
+        type: string
+      type:
+        description: 预算类型
+        type: string
+      updated_at:
+        description: 更新时间
+        type: string
+      user_id:
+        description: 用户ID
+        type: integer
+    type: object
+  dto.Category:
+    properties:
+      icon:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      parent_id:
+        type: integer
+      type:
+        type: string
+    type: object
+  dto.CategoryResponse:
+    properties:
+      created_at:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      parent_id:
+        type: integer
+      sort_order:
+        type: integer
+      sub_categories:
+        description: 子分类列表 (递归展示)
+        items:
+          $ref: '#/definitions/dto.CategoryResponse'
+        type: array
+      type:
+        $ref: '#/definitions/model.CategoryType'
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  dto.CategorySummaryItem:
+    properties:
+      category_icon:
+        description: 分类图标
+        type: string
+      category_id:
+        description: 分类ID
+        type: integer
+      category_name:
+        description: 分类名称
+        type: string
+      total_amount:
+        description: 总金额
+        type: number
+      transaction_count:
+        description: 交易笔数
+        type: integer
+    type: object
+  dto.CreateAccountRequest:
+    properties:
+      initial_balance:
+        description: 初始余额
+        minimum: 0
+        type: number
+      is_default:
+        description: 是否默认账户
+        type: boolean
+      name:
+        description: 账户名称
+        maxLength: 100
+        minLength: 1
+        type: string
+      remark:
+        description: 备注
+        maxLength: 255
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/model.AccountType'
+        description: 账户类型
+    required:
+    - name
+    - type
+    type: object
+  dto.CreateBudgetRequest:
+    properties:
+      amount:
+        description: 预算金额
+        type: number
+      category_id:
+        description: 分类ID
+        type: integer
+      description:
+        description: 备注
+        type: string
+      is_active:
+        description: 是否激活
+        type: boolean
+      name:
+        description: 预算名称
+        type: string
+      notify_rate:
+        description: 提醒阈值
+        maximum: 1
+        minimum: 0
+        type: number
+      period:
+        description: 预算周期
+        enum:
+        - weekly
+        - monthly
+        - yearly
+        type: string
+      start_date:
+        description: 开始日期
+        type: string
+      type:
+        description: 预算类型
+        enum:
+        - overall
+        - category
+        type: string
+    required:
+    - amount
+    - name
+    - period
+    - start_date
+    - type
+    type: object
+  dto.CreateCategoryRequest:
+    properties:
+      icon:
+        description: 图标 (可选)
+        maxLength: 100
+        type: string
+      name:
+        description: 分类名称
+        maxLength: 100
+        minLength: 1
+        type: string
+      parent_id:
+        description: 父分类ID (可选)
+        type: integer
+      sort_order:
+        description: 排序字段 (可选)
+        type: integer
+      type:
+        allOf:
+        - $ref: '#/definitions/model.CategoryType'
+        description: 分类类型 (income, expense)
+        enum:
+        - income
+        - expense
+    required:
+    - name
+    - type
+    type: object
+  dto.CreateTransactionRequest:
+    properties:
+      account_id:
+        description: 账户ID
+        type: integer
+      amount:
+        description: 金额
+        type: number
+      category_id:
+        description: 分类ID
+        type: integer
+      notes:
+        description: 备注
+        maxLength: 255
+        type: string
+      payee_payer:
+        description: 收款方/付款方
+        maxLength: 100
+        type: string
+      transaction_date:
+        description: 交易日期 (YYYY-MM-DD)
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/model.TransactionType'
+        description: 交易类型
+        enum:
+        - income
+        - expense
+        - transfer
+    required:
+    - account_id
+    - amount
+    - category_id
+    - transaction_date
+    - type
+    type: object
+  dto.IncomeExpenseSummaryResponse:
+    properties:
+      end_date:
+        description: 统计结束日期
+        type: string
+      net_amount:
+        description: 净收入（收入-支出）
+        type: number
+      range_type:
+        description: 时间范围类型（day, week, month, year, all, custom）
+        type: string
+      start_date:
+        description: 统计开始日期
+        type: string
+      total_expense:
+        description: 总支出
+        type: number
+      total_income:
+        description: 总收入
+        type: number
+    type: object
+  dto.MonthlyData:
+    properties:
+      month:
+        description: 月份
+        type: integer
+      month_label:
+        description: 月份标签，格式：YYYY-MM
+        type: string
+      net_amount:
+        description: 该月净收入（收入-支出）
+        type: number
+      total_expense:
+        description: 该月总支出
+        type: number
+      total_income:
+        description: 该月总收入
+        type: number
+      year:
+        description: 年份
+        type: integer
+    type: object
+  dto.MonthlyTrendResponse:
+    properties:
+      data:
+        description: 月度数据列表
+        items:
+          $ref: '#/definitions/dto.MonthlyData'
+        type: array
+      months_count:
+        description: 查询的月份数量
+        type: integer
+    type: object
+  dto.TransactionListResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dto.TransactionResponse'
+        type: array
+      total:
+        type: integer
+    type: object
+  dto.TransactionResponse:
+    properties:
+      account:
+        allOf:
+        - $ref: '#/definitions/dto.AccountResponse'
+        description: 关联信息
+      account_id:
+        type: integer
+      amount:
+        type: number
+      category:
+        $ref: '#/definitions/dto.CategoryResponse'
+      category_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      notes:
+        type: string
+      payee_payer:
+        type: string
+      transaction_date:
+        description: 格式化为 YYYY-MM-DD
+        type: string
+      type:
+        $ref: '#/definitions/model.TransactionType'
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  dto.UpdateAccountRequest:
+    properties:
+      is_default:
+        description: 是否默认账户
+        type: boolean
+      name:
+        description: 账户名称
+        maxLength: 100
+        minLength: 1
+        type: string
+      remark:
+        description: 备注
+        maxLength: 255
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/model.AccountType'
+        description: 账户类型
+    type: object
+  dto.UpdateBudgetRequest:
+    properties:
+      amount:
+        description: 预算金额
+        type: number
+      category_id:
+        description: 分类ID
+        type: integer
+      description:
+        description: 备注
+        type: string
+      is_active:
+        description: 是否激活
+        type: boolean
+      name:
+        description: 预算名称
+        type: string
+      notify_rate:
+        description: 提醒阈值
+        maximum: 1
+        minimum: 0
+        type: number
+      period:
+        description: 预算周期
+        enum:
+        - weekly
+        - monthly
+        - yearly
+        type: string
+      start_date:
+        description: 开始日期
+        type: string
+      type:
+        description: 预算类型
+        enum:
+        - overall
+        - category
+        type: string
+    type: object
+  dto.UpdateCategoryRequest:
+    properties:
+      icon:
+        description: 图标 (可选)
+        maxLength: 100
+        type: string
+      name:
+        description: 分类名称 (可选)
+        maxLength: 100
+        minLength: 1
+        type: string
+      parent_id:
+        description: '父分类ID (可选, 注意: 如果要移除父分类，应传递null或不传递该字段，具体行为需在service层定义)'
+        type: integer
+      sort_order:
+        description: 排序字段 (可选)
+        type: integer
+      type:
+        allOf:
+        - $ref: '#/definitions/model.CategoryType'
+        description: 分类类型 (可选)
+        enum:
+        - income
+        - expense
+    type: object
+  dto.UpdateTransactionRequest:
+    properties:
+      account_id:
+        description: 账户ID
+        type: integer
+      amount:
+        description: 金额
+        type: number
+      category_id:
+        description: 分类ID
+        type: integer
+      notes:
+        description: 备注
+        maxLength: 255
+        type: string
+      payee_payer:
+        description: 收款方/付款方
+        maxLength: 100
+        type: string
+      transaction_date:
+        description: 交易日期
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/model.TransactionType'
+        description: 交易类型
+        enum:
+        - income
+        - expense
+        - transfer
+    type: object
+  model.AccountType:
+    enum:
+    - cash
+    - savings
+    - credit_card
+    - alipay
+    - wechat_pay
+    - investment
+    - other
+    type: string
+    x-enum-comments:
+      AccountTypeAlipay: 支付宝
+      AccountTypeCash: 现金
+      AccountTypeCreditCard: 信用卡
+      AccountTypeInvestment: 投资账户
+      AccountTypeOther: 其他
+      AccountTypeSavings: 储蓄卡
+      AccountTypeWechatPay: 微信钱包
+    x-enum-varnames:
+    - AccountTypeCash
+    - AccountTypeSavings
+    - AccountTypeCreditCard
+    - AccountTypeAlipay
+    - AccountTypeWechatPay
+    - AccountTypeInvestment
+    - AccountTypeOther
+  model.CategoryType:
+    enum:
+    - income
+    - expense
+    type: string
+    x-enum-comments:
+      CategoryTypeExpense: 支出分类
+      CategoryTypeIncome: 收入分类
+    x-enum-varnames:
+    - CategoryTypeIncome
+    - CategoryTypeExpense
+  model.TransactionType:
+    enum:
+    - income
+    - expense
+    - transfer
+    type: string
+    x-enum-comments:
+      TransactionTypeExpense: 支出
+      TransactionTypeIncome: 收入
+      TransactionTypeTransfer: 转账
+    x-enum-varnames:
+    - TransactionTypeIncome
+    - TransactionTypeExpense
+    - TransactionTypeTransfer
+  response.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      msg:
+        type: string
     type: object
 info:
   contact: {}
@@ -64,6 +700,1290 @@ paths:
       summary: 获取用户详情
       tags:
       - 用户模块
+  /api/v1/public/user/analysis/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户详情描述
+      parameters:
+      - description: username
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 获取用户详情
+      tags:
+      - 用户模块
+  /api/v1/public/user/login:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册详细描述
+      parameters:
+      - in: formData
+        name: password
+        required: true
+        type: string
+      - in: formData
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 添加用户
+      tags:
+      - 用户模块
+  /api/v1/public/user/scanResult:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户详情描述
+      parameters:
+      - description: Page
+        in: body
+        name: page
+        required: true
+        schema:
+          $ref: '#/definitions/api.Page'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 获取用户详情
+      tags:
+      - 用户模块
+  /bk/accounts:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户的所有账户
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.AccountResponse'
+                  type: array
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 获取账户列表
+      tags:
+      - BookkeepingAccount
+    post:
+      consumes:
+      - application/json
+      description: 用户创建一个新的账户
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 账户信息
+        in: body
+        name: account_info
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.AccountResponse'
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 创建账户
+      tags:
+      - BookkeepingAccount
+  /bk/accounts/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定ID的账户
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 账户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "404":
+          description: 账户不存在
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 删除账户
+      tags:
+      - BookkeepingAccount
+    get:
+      consumes:
+      - application/json
+      description: 获取指定ID的账户详细信息
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 账户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.AccountResponse'
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "404":
+          description: 账户不存在
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 获取单个账户信息
+      tags:
+      - BookkeepingAccount
+    put:
+      consumes:
+      - application/json
+      description: 更新指定ID的账户信息
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 账户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 账户信息
+        in: body
+        name: account_info
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.AccountResponse'
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "404":
+          description: 账户不存在
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 更新账户信息
+      tags:
+      - BookkeepingAccount
+  /bk/budgets:
+    get:
+      consumes:
+      - application/json
+      description: 获取预算列表，支持分页和筛选
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        required: true
+        type: integer
+      - default: 10
+        description: 每页大小
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      - description: 预算类型 (overall, category)
+        in: query
+        name: type
+        type: string
+      - description: 预算周期 (weekly, monthly, yearly)
+        in: query
+        name: period
+        type: string
+      - description: 分类ID（仅当筛选分类预算时使用）
+        in: query
+        name: category_id
+        type: integer
+      - description: 是否激活
+        in: query
+        name: is_active
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BudgetListResponse'
+      summary: 获取预算列表
+      tags:
+      - 预算管理
+    post:
+      consumes:
+      - application/json
+      description: 创建新的预算
+      parameters:
+      - description: 预算信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateBudgetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BudgetResponse'
+      summary: 创建预算
+      tags:
+      - 预算管理
+  /bk/budgets/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除预算
+      parameters:
+      - description: 预算ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 删除预算
+      tags:
+      - 预算管理
+    get:
+      consumes:
+      - application/json
+      description: 获取单个预算的详细信息
+      parameters:
+      - description: 预算ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BudgetResponse'
+      summary: 获取预算详情
+      tags:
+      - 预算管理
+    put:
+      consumes:
+      - application/json
+      description: 更新预算信息
+      parameters:
+      - description: 预算ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateBudgetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BudgetResponse'
+      summary: 更新预算
+      tags:
+      - 预算管理
+  /bk/budgets/{id}/progress:
+    get:
+      consumes:
+      - application/json
+      description: 获取单个预算的当前执行进度
+      parameters:
+      - description: 预算ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BudgetProgressResponse'
+      summary: 获取预算进度
+      tags:
+      - 预算管理
+  /bk/budgets/active-progress:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有激活的预算及其当前执行进度
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.BudgetProgressResponse'
+            type: array
+      summary: 获取所有激活预算的进度
+      tags:
+      - 预算管理
+  /bk/budgets/alerts:
+    get:
+      consumes:
+      - application/json
+      description: 获取达到或超过提醒阈值的预算列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.BudgetProgressResponse'
+            type: array
+      summary: 检查预算警告
+      tags:
+      - 预算管理
+  /bk/categories:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的所有分类，支持按类型过滤，并以层级结构返回顶级分类及其子分类
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类类型 (income/expense)
+        in: query
+        name: type
+        type: string
+      - description: 父分类ID (查询指定父分类下的子分类，0表示顶级分类)
+        in: query
+        name: parent_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.CategoryResponse'
+                  type: array
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 获取分类列表 (层级)
+      tags:
+      - BookkeepingCategory
+    post:
+      consumes:
+      - application/json
+      description: 用户创建一个新的收支分类
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类信息
+        in: body
+        name: category_info
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.CategoryResponse'
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 创建分类
+      tags:
+      - BookkeepingCategory
+  /bk/categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 根据ID删除用户的分类
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "404":
+          description: 分类不存在
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 删除分类
+      tags:
+      - BookkeepingCategory
+    get:
+      consumes:
+      - application/json
+      description: 根据ID获取用户的单个分类信息，包含子分类
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.CategoryResponse'
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "404":
+          description: 分类不存在
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 获取单个分类信息
+      tags:
+      - BookkeepingCategory
+    put:
+      consumes:
+      - application/json
+      description: 根据ID更新用户的分类信息
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 待更新的分类信息
+        in: body
+        name: category_info
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.CategoryResponse'
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "404":
+          description: 分类不存在
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 更新分类信息
+      tags:
+      - BookkeepingCategory
+  /bk/categories/flat:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的所有分类，以扁平列表形式返回，主要用于下拉选择框等场景
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 分类类型 (income/expense)
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.CategoryResponse'
+                  type: array
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 获取所有分类列表 (扁平)
+      tags:
+      - BookkeepingCategory
+  /bk/transactions:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户的交易流水记录，支持分页和筛选
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 页码，默认1
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量，默认20
+        in: query
+        name: page_size
+        type: integer
+      - description: 账户ID筛选
+        in: query
+        name: account_id
+        type: integer
+      - description: 分类ID筛选
+        in: query
+        name: category_id
+        type: integer
+      - description: 交易类型筛选 (income, expense, transfer)
+        in: query
+        name: type
+        type: string
+      - description: 开始日期筛选 (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: 结束日期筛选 (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.TransactionListResponse'
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 获取交易流水列表
+      tags:
+      - BookkeepingTransaction
+    post:
+      consumes:
+      - application/json
+      description: 用户创建一个新的交易记录
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 交易信息
+        in: body
+        name: transaction_info
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateTransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.TransactionResponse'
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 创建交易流水
+      tags:
+      - BookkeepingTransaction
+  /bk/transactions/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定ID的交易流水
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 交易流水ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "404":
+          description: 交易记录不存在
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 删除交易流水
+      tags:
+      - BookkeepingTransaction
+    get:
+      consumes:
+      - application/json
+      description: 获取指定ID的交易流水详细信息
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 交易流水ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.TransactionResponse'
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "404":
+          description: 交易记录不存在
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 获取单个交易流水信息
+      tags:
+      - BookkeepingTransaction
+    put:
+      consumes:
+      - application/json
+      description: 更新指定ID的交易流水信息
+      parameters:
+      - description: 令牌
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: 交易流水ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 交易信息
+        in: body
+        name: transaction_info
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateTransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.TransactionResponse'
+                msg:
+                  type: string
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "404":
+          description: 交易记录不存在
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      summary: 更新交易流水信息
+      tags:
+      - BookkeepingTransaction
+  /statistics/account-summary:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有账户的余额汇总信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.AccountSummaryItem'
+            type: array
+      summary: 获取账户余额汇总
+      tags:
+      - 统计
+  /statistics/category-summary:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定时间范围内的分类汇总信息
+      parameters:
+      - description: 自定义结束日期（当 range_type 为 custom 时必填）
+        in: query
+        name: end_date
+        type: string
+      - description: 查询的月份数量，用于月度趋势统计
+        in: query
+        name: months_count
+        type: integer
+      - description: 时间范围类型
+        enum:
+        - day
+        - week
+        - month
+        - year
+        - all
+        - custom
+        in: query
+        name: range_type
+        required: true
+        type: string
+      - description: 自定义开始日期（当 range_type 为 custom 时必填）
+        in: query
+        name: start_date
+        type: string
+      - description: 交易类型：收入或支出
+        enum:
+        - income
+        - expense
+        in: query
+        name: transaction_type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.CategorySummaryItem'
+            type: array
+      summary: 获取分类汇总
+      tags:
+      - 统计
+  /statistics/income-expense-summary:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定时间范围内的收支汇总信息
+      parameters:
+      - description: 自定义结束日期（当 range_type 为 custom 时必填）
+        in: query
+        name: end_date
+        type: string
+      - description: 查询的月份数量，用于月度趋势统计
+        in: query
+        name: months_count
+        type: integer
+      - description: 时间范围类型
+        enum:
+        - day
+        - week
+        - month
+        - year
+        - all
+        - custom
+        in: query
+        name: range_type
+        required: true
+        type: string
+      - description: 自定义开始日期（当 range_type 为 custom 时必填）
+        in: query
+        name: start_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.IncomeExpenseSummaryResponse'
+      summary: 获取收支汇总
+      tags:
+      - 统计
+  /statistics/monthly-trend:
+    get:
+      consumes:
+      - application/json
+      description: 获取最近几个月的收支趋势数据
+      parameters:
+      - default: 12
+        description: 查询的月份数量，默认为12
+        in: query
+        name: months_count
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.MonthlyTrendResponse'
+      summary: 获取月度收支趋势
+      tags:
+      - 统计
 securityDefinitions:
   ApiKeyAuth:
     in: header
