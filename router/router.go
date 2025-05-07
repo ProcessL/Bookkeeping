@@ -4,17 +4,18 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
+	"net/http"
+	"os/signal"
+	"syscall"
+	"time"
+
 	_ "github.com/dotdancer/gogofly/docs"
 	"github.com/dotdancer/gogofly/global"
 	"github.com/dotdancer/gogofly/middleware"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"log"
-	"net/http"
-	"os/signal"
-	"syscall"
-	"time"
 )
 
 type IFnRegisterRouter = func(rgPublic *gin.RouterGroup, rgAuth *gin.RouterGroup)
@@ -90,4 +91,5 @@ func InitRouter() {
 
 func InitBasePlatformRouters() {
 	InitUserRouter()
+	InitBookkeepingRouter()
 }

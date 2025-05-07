@@ -32,23 +32,23 @@ type BookkeepingCategoryApi struct {
 func (a *BookkeepingCategoryApi) CreateCategory(c *gin.Context) {
 	var req dto.CreateCategoryRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.FailWithMessage("请求参数错误: "+utils.GetErrorMsg(req, err), c)
+		response.FailWithMessage(c, "请求参数错误: "+utils.GetErrorMsg(req, err))
 		return
 	}
 
 	userID := utils.GetUserID(c) // 从JWT获取用户ID
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	category, err := a.Service.CreateCategory(userID, req)
 	if err != nil {
-		response.FailWithMessage("创建分类失败: "+err.Error(), c)
+		response.FailWithMessage(c, "创建分类失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(category, c)
+	response.OkWithData(c, category)
 }
 
 // GetCategory godoc
@@ -68,23 +68,23 @@ func (a *BookkeepingCategoryApi) GetCategory(c *gin.Context) {
 	categoryIDStr := c.Param("id")
 	categoryID, err := strconv.ParseUint(categoryIDStr, 10, 32)
 	if err != nil {
-		response.FailWithMessage("无效的分类ID", c)
+		response.FailWithMessage(c, "无效的分类ID")
 		return
 	}
 
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	category, err := a.Service.GetCategoryByID(userID, uint(categoryID))
 	if err != nil {
-		response.FailWithMessage("获取分类信息失败: "+err.Error(), c)
+		response.FailWithMessage(c, "获取分类信息失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(category, c)
+	response.OkWithData(c, category)
 }
 
 // UpdateCategory godoc
@@ -105,29 +105,29 @@ func (a *BookkeepingCategoryApi) UpdateCategory(c *gin.Context) {
 	categoryIDStr := c.Param("id")
 	categoryID, err := strconv.ParseUint(categoryIDStr, 10, 32)
 	if err != nil {
-		response.FailWithMessage("无效的分类ID", c)
+		response.FailWithMessage(c, "无效的分类ID")
 		return
 	}
 
 	var req dto.UpdateCategoryRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.FailWithMessage("请求参数错误: "+utils.GetErrorMsg(req, err), c)
+		response.FailWithMessage(c, "请求参数错误: "+utils.GetErrorMsg(req, err))
 		return
 	}
 
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	updatedCategory, err := a.Service.UpdateCategory(userID, uint(categoryID), req)
 	if err != nil {
-		response.FailWithMessage("更新分类失败: "+err.Error(), c)
+		response.FailWithMessage(c, "更新分类失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(updatedCategory, c)
+	response.OkWithData(c, updatedCategory)
 }
 
 // DeleteCategory godoc
@@ -147,22 +147,22 @@ func (a *BookkeepingCategoryApi) DeleteCategory(c *gin.Context) {
 	categoryIDStr := c.Param("id")
 	categoryID, err := strconv.ParseUint(categoryIDStr, 10, 32)
 	if err != nil {
-		response.FailWithMessage("无效的分类ID", c)
+		response.FailWithMessage(c, "无效的分类ID")
 		return
 	}
 
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	if err := a.Service.DeleteCategory(userID, uint(categoryID)); err != nil {
-		response.FailWithMessage("删除分类失败: "+err.Error(), c)
+		response.FailWithMessage(c, "删除分类失败: "+err.Error())
 		return
 	}
 
-	response.OkWithMessage("分类删除成功", c)
+	response.OkWithMessage(c, "分类删除成功")
 }
 
 // ListCategories godoc
@@ -180,7 +180,7 @@ func (a *BookkeepingCategoryApi) DeleteCategory(c *gin.Context) {
 func (a *BookkeepingCategoryApi) ListCategories(c *gin.Context) {
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
@@ -199,11 +199,11 @@ func (a *BookkeepingCategoryApi) ListCategories(c *gin.Context) {
 
 	categories, err := a.Service.ListCategories(userID, categoryType, parentID)
 	if err != nil {
-		response.FailWithMessage("获取分类列表失败: "+err.Error(), c)
+		response.FailWithMessage(c, "获取分类列表失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(categories, c)
+	response.OkWithData(c, categories)
 }
 
 // ListAllCategoriesFlat godoc
@@ -220,7 +220,7 @@ func (a *BookkeepingCategoryApi) ListCategories(c *gin.Context) {
 func (a *BookkeepingCategoryApi) ListAllCategoriesFlat(c *gin.Context) {
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
@@ -228,9 +228,9 @@ func (a *BookkeepingCategoryApi) ListAllCategoriesFlat(c *gin.Context) {
 
 	categories, err := a.Service.GetAllCategoriesFlat(userID, categoryType)
 	if err != nil {
-		response.FailWithMessage("获取分类列表失败: "+err.Error(), c)
+		response.FailWithMessage(c, "获取分类列表失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(categories, c)
+	response.OkWithData(c, categories)
 }

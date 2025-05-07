@@ -30,23 +30,23 @@ type BookkeepingAccountApi struct {
 func (a *BookkeepingAccountApi) CreateAccount(c *gin.Context) {
 	var req dto.CreateAccountRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.FailWithMessage("请求参数错误: "+utils.GetErrorMsg(req, err), c)
+		response.FailWithMessage(c, "请求参数错误: "+utils.GetErrorMsg(req, err))
 		return
 	}
 
 	userID := utils.GetUserID(c) // 从JWT获取用户ID
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	account, err := a.Service.CreateAccount(userID, req)
 	if err != nil {
-		response.FailWithMessage("创建账户失败: "+err.Error(), c)
+		response.FailWithMessage(c, "创建账户失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(account, c)
+	response.OkWithData(c, account)
 }
 
 // ListAccounts godoc
@@ -62,17 +62,17 @@ func (a *BookkeepingAccountApi) CreateAccount(c *gin.Context) {
 func (a *BookkeepingAccountApi) ListAccounts(c *gin.Context) {
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	accounts, err := a.Service.ListAccounts(userID)
 	if err != nil {
-		response.FailWithMessage("获取账户列表失败: "+err.Error(), c)
+		response.FailWithMessage(c, "获取账户列表失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(accounts, c)
+	response.OkWithData(c, accounts)
 }
 
 // GetAccount godoc
@@ -91,23 +91,23 @@ func (a *BookkeepingAccountApi) ListAccounts(c *gin.Context) {
 func (a *BookkeepingAccountApi) GetAccount(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		response.FailWithMessage("无效的账户ID", c)
+		response.FailWithMessage(c, "无效的账户ID")
 		return
 	}
 
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	account, err := a.Service.GetAccount(userID, uint(id))
 	if err != nil {
-		response.FailWithMessage("获取账户信息失败: "+err.Error(), c)
+		response.FailWithMessage(c, "获取账户信息失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(account, c)
+	response.OkWithData(c, account)
 }
 
 // UpdateAccount godoc
@@ -127,29 +127,29 @@ func (a *BookkeepingAccountApi) GetAccount(c *gin.Context) {
 func (a *BookkeepingAccountApi) UpdateAccount(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		response.FailWithMessage("无效的账户ID", c)
+		response.FailWithMessage(c, "无效的账户ID")
 		return
 	}
 
 	var req dto.UpdateAccountRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.FailWithMessage("请求参数错误: "+utils.GetErrorMsg(req, err), c)
+		response.FailWithMessage(c, "请求参数错误: "+utils.GetErrorMsg(req, err))
 		return
 	}
 
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	account, err := a.Service.UpdateAccount(userID, uint(id), req)
 	if err != nil {
-		response.FailWithMessage("更新账户失败: "+err.Error(), c)
+		response.FailWithMessage(c, "更新账户失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(account, c)
+	response.OkWithData(c, account)
 }
 
 // DeleteAccount godoc
@@ -168,21 +168,21 @@ func (a *BookkeepingAccountApi) UpdateAccount(c *gin.Context) {
 func (a *BookkeepingAccountApi) DeleteAccount(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		response.FailWithMessage("无效的账户ID", c)
+		response.FailWithMessage(c, "无效的账户ID")
 		return
 	}
 
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	err = a.Service.DeleteAccount(userID, uint(id))
 	if err != nil {
-		response.FailWithMessage("删除账户失败: "+err.Error(), c)
+		response.FailWithMessage(c, "删除账户失败: "+err.Error())
 		return
 	}
 
-	response.OkWithMessage("删除账户成功", c)
+	response.OkWithMessage(c, "删除账户成功")
 }

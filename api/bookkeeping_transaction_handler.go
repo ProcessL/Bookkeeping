@@ -30,23 +30,23 @@ type BookkeepingTransactionApi struct {
 func (a *BookkeepingTransactionApi) CreateTransaction(c *gin.Context) {
 	var req dto.CreateTransactionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.FailWithMessage("请求参数错误: "+utils.GetErrorMsg(req, err), c)
+		response.FailWithMessage(c, "请求参数错误: "+utils.GetErrorMsg(req, err))
 		return
 	}
 
 	userID := utils.GetUserID(c) // 从JWT获取用户ID
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	transaction, err := a.Service.CreateTransaction(userID, req)
 	if err != nil {
-		response.FailWithMessage("创建交易记录失败: "+err.Error(), c)
+		response.FailWithMessage(c, "创建交易记录失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(transaction, c)
+	response.OkWithData(c, transaction)
 }
 
 // ListTransactions godoc
@@ -70,7 +70,7 @@ func (a *BookkeepingTransactionApi) CreateTransaction(c *gin.Context) {
 func (a *BookkeepingTransactionApi) ListTransactions(c *gin.Context) {
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
@@ -96,11 +96,11 @@ func (a *BookkeepingTransactionApi) ListTransactions(c *gin.Context) {
 
 	transactions, err := a.Service.ListTransactions(userID, query)
 	if err != nil {
-		response.FailWithMessage("获取交易流水列表失败: "+err.Error(), c)
+		response.FailWithMessage(c, "获取交易流水列表失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(transactions, c)
+	response.OkWithData(c, transactions)
 }
 
 // GetTransaction godoc
@@ -119,23 +119,23 @@ func (a *BookkeepingTransactionApi) ListTransactions(c *gin.Context) {
 func (a *BookkeepingTransactionApi) GetTransaction(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		response.FailWithMessage("无效的交易流水ID", c)
+		response.FailWithMessage(c, "无效的交易流水ID")
 		return
 	}
 
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	transaction, err := a.Service.GetTransaction(userID, uint(id))
 	if err != nil {
-		response.FailWithMessage("获取交易流水信息失败: "+err.Error(), c)
+		response.FailWithMessage(c, "获取交易流水信息失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(transaction, c)
+	response.OkWithData(c, transaction)
 }
 
 // UpdateTransaction godoc
@@ -155,29 +155,29 @@ func (a *BookkeepingTransactionApi) GetTransaction(c *gin.Context) {
 func (a *BookkeepingTransactionApi) UpdateTransaction(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		response.FailWithMessage("无效的交易流水ID", c)
+		response.FailWithMessage(c, "无效的交易流水ID")
 		return
 	}
 
 	var req dto.UpdateTransactionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.FailWithMessage("请求参数错误: "+utils.GetErrorMsg(req, err), c)
+		response.FailWithMessage(c, "请求参数错误: "+utils.GetErrorMsg(req, err))
 		return
 	}
 
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	transaction, err := a.Service.UpdateTransaction(userID, uint(id), req)
 	if err != nil {
-		response.FailWithMessage("更新交易流水失败: "+err.Error(), c)
+		response.FailWithMessage(c, "更新交易流水失败: "+err.Error())
 		return
 	}
 
-	response.OkWithData(transaction, c)
+	response.OkWithData(c, transaction)
 }
 
 // DeleteTransaction godoc
@@ -196,21 +196,21 @@ func (a *BookkeepingTransactionApi) UpdateTransaction(c *gin.Context) {
 func (a *BookkeepingTransactionApi) DeleteTransaction(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		response.FailWithMessage("无效的交易流水ID", c)
+		response.FailWithMessage(c, "无效的交易流水ID")
 		return
 	}
 
 	userID := utils.GetUserID(c)
 	if userID == 0 {
-		response.FailWithMessage("用户未登录或无法获取用户信息", c)
+		response.FailWithMessage(c, "用户未登录或无法获取用户信息")
 		return
 	}
 
 	err = a.Service.DeleteTransaction(userID, uint(id))
 	if err != nil {
-		response.FailWithMessage("删除交易流水失败: "+err.Error(), c)
+		response.FailWithMessage(c, "删除交易流水失败: "+err.Error())
 		return
 	}
 
-	response.OkWithMessage("删除交易流水成功", c)
+	response.OkWithMessage(c, "删除交易流水成功")
 }

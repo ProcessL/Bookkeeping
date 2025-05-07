@@ -2,6 +2,7 @@ package utils
 
 import (
 	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -20,6 +21,18 @@ func GetUserID(c *gin.Context) uint {
 		}
 	}
 	return 0
+}
+
+// StrToInt 将字符串转换为整数，转换失败时返回默认值
+func StrToInt(s string) int {
+	if s == "" {
+		return 0
+	}
+	val, err := strconv.Atoi(s)
+	if err != nil {
+		return 0
+	}
+	return val
 }
 
 // GetErrorMsg 获取验证错误的详细信息

@@ -23,6 +23,7 @@ func Start() {
 			&model.Account{},
 			&model.Transaction{},
 			&model.Category{},
+			&model.Budget{}, // Add Budget model for migration
 		)
 		if err != nil {
 			global.Logger.Error("Failed to migrate database tables: " + err.Error())
