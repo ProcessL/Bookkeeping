@@ -8,15 +8,15 @@ zap:
   max-age: 2
   develop: true
 
-# mysql:
-#   username: "root"
-#   password:  "root"
-#   db-name: "go_fly"
-#   address: "127.0.0.1"
-#   port: "3306"
-#   config: "charset=utf8mb4&parseTime=True&loc=Local"
-#   max-idle-conns: 10
-#   max-open-conns: 100
+mysql:
+  username: "root"
+  password:  "kaolor"
+  db-name: "bookkeeping"
+  address: "127.0.0.1"
+  port: "3306"
+  config: "charset=utf8mb4&parseTime=True&loc=Local"
+  max-idle-conns: 10
+  max-open-conns: 100
 
 redis:
   addr: "localhost:6379"

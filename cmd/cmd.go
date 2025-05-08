@@ -36,9 +36,14 @@ func Start() {
 		global.Logger.Warn("Database not initialized (global.DB is nil), skipping migrations.")
 	}
 
-	//if global.Config.System.UseRedis {
-	//	core.InitRedis()
-	//}
+	// 只在配置启用Redis时初始化Redis连接
+	if global.Config.System.UseRedis {
+		global.Logger.Info("Initializing Redis connection...")
+		core.InitRedis()
+	} else {
+		global.Logger.Info("Redis is disabled in config, skipping Redis initialization.")
+	}
+
 	router.InitRouter()
 }
 

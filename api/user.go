@@ -45,11 +45,16 @@ func (l *UserInfoApi) Login(c *gin.Context) {
 		response.FailWithMessage(c, err.Error())
 		return
 	}
-	if global.Redis.Set(c, strconv.Itoa(int(user.ID))+user.Username, token, 60*time.Second).Err() != nil {
-		response.FailWithDetailed(c, "redis set token error", nil, response.CustomerWithCode(http.StatusInternalServerError))
-		return
-	}
-	response.OkWithData(c, token)
+	// 移除Redis存储token的部分，直接使用JWT验证
+	// if global.Redis.Set(c, strconv.Itoa(int(user.ID))+user.Username, token, 60*time.Second).Err() != nil {
+	// 	response.FailWithDetailed(c, "redis set token error", nil, response.CustomerWithCode(http.StatusInternalServerError))
+	// 	return
+	// }
+	// 直接返回用户信息和token
+	response.OkWithData(c, gin.H{
+		"user":  user,
+		"token": token,
+	})
 }
 
 // AddUser

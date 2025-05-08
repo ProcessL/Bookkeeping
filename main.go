@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/dotdancer/gogofly/cmd"
-	"github.com/gin-gonic/gin"
 	"log"
 	"time"
+
+	"github.com/dotdancer/gogofly/cmd"
+	"github.com/gin-gonic/gin"
 )
 
 //go:generate swag init
